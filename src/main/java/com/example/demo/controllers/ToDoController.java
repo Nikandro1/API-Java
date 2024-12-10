@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.exceptions.InvalidIdException;
 import com.example.demo.models.Task;
 import com.example.demo.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,9 @@ public class ToDoController {
     }
 
     @GetMapping(value = "/tasks/{id}")
-    public Optional<Task> getTaskById (@PathVariable Long id){
-        return toDoRepository.findById(id);
+    public Task getTaskById(@PathVariable Long id) {
+        return toDoRepository.findById(id)
+                .orElseThrow(() -> new InvalidIdException("El ID " + id + " no fue encontrado"));
     }
 
 
